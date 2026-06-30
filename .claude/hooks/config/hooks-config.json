@@ -1,0 +1,13 @@
+{
+  "_comment": "Committed hook configuration — shared with the team",
+  "sensitive_paths": [
+    "lib/auth/",
+    "src/database/migrations/",
+    "app/api/",
+    ".env"
+  ],
+  "format_on_save": true,
+  "lint_on_save": false,
+  "block_exit_code": 2,
+  "allow_exit_code": 0
+}
