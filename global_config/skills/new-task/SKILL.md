@@ -62,7 +62,50 @@ If the project already has an ER diagram, read it first and update only what cha
 
 ---
 
-## Step 3 — Technical design → `FOLDER/technical-design.md`
+## Step 3 — System flow diagram → `FOLDER/flow-diagram.md`
+
+Create a plain-language flow diagram that any stakeholder — not just engineers — can read and understand. Think of this as a system design walkthrough: where does the request come from, what happens at each stage, and what comes back.
+
+**Determine the entry point first:**
+- **New API route / HTTP handler** → entry point is `User Request (HTTP {METHOD} /path)`; exit point is `Response returned to user`
+- **Background job / cron / queue consumer** → entry point is the scheduler or queue trigger
+- **Library function / utility** → entry point is `Caller: {function or module name}`
+- **UI interaction** → entry point is `User clicks / submits {action}`
+
+**What the diagram must show, in order:**
+1. Entry point — who or what triggers this
+2. Validation / auth checks (if any)
+3. Each major processing step — name what is being computed or fetched, not just which layer
+4. External calls (DB queries, third-party APIs, cache reads/writes) — label what data goes in and what comes back
+5. Decision branches — happy path vs error / not-found / permission denied
+6. Final output — response payload, side effect, or return value
+
+**Labelling rules — write for a non-engineer:**
+- Use plain English on every arrow and node — no jargon, no class names
+- If a step "calculates the discounted price from the cart total and coupon code", say exactly that — not just "Service layer"
+- For DB calls: describe what is looked up or saved, e.g. `Look up user by email` not `DB query`
+- For branches: phrase as a question, e.g. `Is the user logged in?`
+
+```mermaid
+flowchart TD
+  A([User Request: POST /checkout]) --> B[Validate request body & auth token]
+  B --> C{Is user authenticated?}
+  C -- No --> D([Return 401 Unauthorized])
+  C -- Yes --> E[Fetch cart items for this user from DB]
+  E --> F[Apply coupon discount if coupon code is present]
+  F --> G[Calculate final total including tax]
+  G --> H[Charge payment via Stripe API]
+  H --> I{Payment successful?}
+  I -- No --> J([Return 402 Payment Failed with reason])
+  I -- Yes --> K[Save order to DB and clear the cart]
+  K --> L([Return 200 with order confirmation and order ID])
+```
+
+Keep the diagram at the **feature level** — enough detail that someone can trace exactly how data flows, but not so deep that every helper function appears. A good diagram has 8–20 nodes.
+
+---
+
+## Step 4 — Technical design → `FOLDER/technical-design.md`
 
 Point-by-point. Include:
 - Architecture changes (new files, changed modules)
@@ -81,7 +124,7 @@ flowchart TD
 
 ---
 
-## Step 4 — Branch & execution (splits on ticket)
+## Step 5 — Branch & execution (splits on ticket)
 
 ### No ticket
 1. Create branch: `feature/{short-description}`
@@ -126,6 +169,6 @@ flowchart TD
 ## Output rules
 - Always use Mermaid for diagrams — never ASCII art
 - Documents: bullet points over paragraphs
-- Never start coding before Steps 1–3 are written and confirmed
+- Never start coding before Steps 1–4 are written and confirmed
 - Never skip the test-first rule — commit failing tests before implementing
 - Never modify existing passing tests
