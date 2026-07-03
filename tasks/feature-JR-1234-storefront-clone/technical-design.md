@@ -65,6 +65,11 @@ flowchart TD
   D --> A
 ```
 
+## Deployment shape (low-infra)
+- `server` and `web` each get a multi-stage Dockerfile; `docker-compose.yml` runs `postgres` + `server` + `web` together, so `docker compose up` is full local parity and the same images are what ship to a single small VPS/host — no orchestration platform needed at this scale.
+- `web`'s runtime stage is `nginx:alpine` serving the Vite build output as a static SPA (with a `try_files ... /index.html` fallback for client-side routing); it never runs Node at runtime.
+- Build stages use `node:22-slim` (glibc), not `node:22-alpine` — Vite's `rollup` dependency ships platform-specific optional binaries that the npm lockfile resolves for glibc; building on musl (Alpine) fails with a missing-native-module error. `server`'s Alpine stages are unaffected since `tsc`/`express`/`pg` have no native-binary dependency.
+
 ## API contracts
 - `GET /api/categories/:slug/products?metal=&caratMin=&caratMax=&diamondType=&stoneShape=&sort=&page=&pageSize=&q=`
   → `{ items: ProductListItemDTO[], total: number, page: number, pageSize: number, availableFilters: FilterOptionDTO[] }`
