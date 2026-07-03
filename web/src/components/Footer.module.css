@@ -5,9 +5,10 @@
   align-items: center;
   gap: 1rem;
   padding: 1.5rem;
-  border-top: 1px solid #e5e5e5;
+  background: var(--bb-bg-secondary);
+  border-top: 1px solid var(--color-border);
   font-size: 0.8125rem;
-  color: #555;
+  color: var(--color-muted);
 }
 
 .nav {
@@ -22,6 +23,10 @@
 .nav a {
   text-decoration: none;
   color: inherit;
+}
+
+.nav a:hover {
+  color: var(--color-ink);
 }
 
 @media (max-width: 480px) {

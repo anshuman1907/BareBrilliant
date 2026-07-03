@@ -34,6 +34,6 @@ describe("Footer", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/BareBrilliant/)).toBeInTheDocument();
+    expect(screen.getByText(/Bare Brilliant/)).toBeInTheDocument();
   });
 });

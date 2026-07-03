@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getProductByItemId } from "./products.controller.js";
+import { getProductController } from "./products.controller.js";
+import { asyncHandler } from "../../shared/http/asyncHandler.js";
 
 export const productsRoutes = Router();
-productsRoutes.get("/:itemId", getProductByItemId);
+productsRoutes.get("/:itemId", asyncHandler(getProductController));

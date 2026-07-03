@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { listCatalogProducts } from "./catalog.controller.js";
+import { listCategoryProducts } from "./catalog.controller.js";
+import { asyncHandler } from "../../shared/http/asyncHandler.js";
 
 export const catalogRoutes = Router();
-catalogRoutes.get("/", listCatalogProducts);
+catalogRoutes.get("/:slug/products", asyncHandler(listCategoryProducts));

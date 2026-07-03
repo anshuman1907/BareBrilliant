@@ -1,6 +1,10 @@
 import type { Request, Response } from "express";
-import { getProductPlaceholderMessage } from "./products.service.js";
+import { dbPool } from "../../shared/db/pool.js";
+import { getProductByItemId } from "./products.service.js";
 
-export function getProductByItemId(_req: Request, res: Response): void {
-  res.status(501).json({ message: getProductPlaceholderMessage() });
+export async function getProductController(req: Request, res: Response): Promise<void> {
+  const itemId = req.params["itemId"] ?? "";
+
+  const product = await getProductByItemId(dbPool, itemId);
+  res.status(200).json(product);
 }

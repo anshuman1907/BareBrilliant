@@ -11,14 +11,19 @@
     "lint": "eslint src",
     "types": "tsc --noEmit",
     "migrate:up": "node-pg-migrate up",
-    "migrate:down": "node-pg-migrate down"
+    "migrate:down": "node-pg-migrate down",
+    "ingest:wedding-rings": "tsx src/infra/ingestion/ingestWeddingRings.ts",
+    "seed:demo-categories": "tsx src/infra/ingestion/seedDemoCategories.ts",
+    "seed:hover-media": "tsx src/infra/ingestion/seedHoverMedia.ts"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "pg": "^8.13.0"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^4.17.21",
     "@types/node": "^22.9.0",
     "@types/pg": "^8.11.10",

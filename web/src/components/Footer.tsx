@@ -15,7 +15,7 @@ export function Footer(): ReactElement {
           ))}
         </ul>
       </nav>
-      <span>&copy; {new Date().getFullYear()} BareBrilliant</span>
+      <span>&copy; {new Date().getFullYear()} Bare Brilliant</span>
     </footer>
   );
 }

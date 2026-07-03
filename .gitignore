@@ -30,6 +30,7 @@ coverage/
 .idea/
 *.swp
 *.swo
+.playwright-*
 
 # OS
 .DS_Store
