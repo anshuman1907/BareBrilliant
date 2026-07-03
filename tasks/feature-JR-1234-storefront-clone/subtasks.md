@@ -6,14 +6,15 @@ Parent branch: `feature/JR-1234-storefront-clone`
 - Branch: `feature/JR-1234-task1-scaffolding`
 - Depends on: none
 
-### Task 2: Layout & static pages
+### Task 2: Layout & static pages — done
 - Scope: Header/Footer components, app shell routing, `pages` feature module (controller/service/repository) serving `/terms-conditions`, `/privacy-policy`, `/shipping-returns`, `/about-us`, `/contact-us` from Postgres-backed content; mobile + desktop responsive
 - Test criteria: unit tests for `pages.service`/`pages.repository`; each static route returns 200 and renders Header+Footer; responsive check at 375px and 1280px
 - Branch: `feature/JR-1234-task2-layout-pages`
 - Depends on: Task 1
+- Note: pulled `node-pg-migrate` and the `static_page` table/seed migration into this task (originally scoped to Task 3) since Task 2 needed a persisted content source. Task 3's migration below no longer needs to touch `static_page`.
 
 ### Task 3: Catalog data model & ingestion
-- Scope: Migration for `category`, `product`, `product_variant`, `product_image`, `attribute`, `attribute_value`, `variant_attribute_value` (per [er-diagram.md](er-diagram.md)); one-off ingestion script under `infra/ingestion` that populates ~1,000 products for the `wedding-rings` category from the source pages, idempotent by `item_id`
+- Scope: Migration for `category`, `product`, `product_variant`, `product_image`, `attribute`, `attribute_value`, `variant_attribute_value` (per [er-diagram.md](er-diagram.md)) — `static_page` already exists from Task 2; one-off ingestion script under `infra/ingestion` that populates ~1,000 products for the `wedding-rings` category from the source pages, idempotent by `item_id`
 - Test criteria: migration runs clean up/down; ingestion script re-run is a no-op on unchanged data (idempotency test); row counts match expected sample after a scoped test run
 - Branch: `feature/JR-1234-task3-catalog-data`
 - Depends on: Task 1
