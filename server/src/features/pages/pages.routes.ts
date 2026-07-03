@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getPageBySlug } from "./pages.controller.js";
+import { getPageController } from "./pages.controller.js";
+import { asyncHandler } from "../../shared/http/asyncHandler.js";
 
 export const pagesRoutes = Router();
-pagesRoutes.get("/:slug", getPageBySlug);
+pagesRoutes.get("/:slug", asyncHandler(getPageController));

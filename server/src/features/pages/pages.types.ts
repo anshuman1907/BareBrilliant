@@ -1,1 +1,6 @@
-export type PageRouteParams = Record<string, never>;
+export interface StaticPage {
+  slug: string;
+  title: string;
+  contentHtml: string;
+  updatedAt: string;
+}
