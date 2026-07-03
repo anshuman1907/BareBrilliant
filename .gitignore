@@ -5,6 +5,7 @@
 # Environment secrets
 .env
 .env.*
+!.env.example
 *.local
 
 # Dependencies
@@ -18,6 +19,7 @@ build/
 .next/
 out/
 .nuxt/
+*.tsbuildinfo
 
 # Test coverage
 coverage/
