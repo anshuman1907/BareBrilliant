@@ -12,6 +12,8 @@
     "types": "npm run types --workspaces --if-present",
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
+    "db:init": "npm run db:init --workspace=server",
+    "db:populate": "npm run db:populate --workspace=server",
     "migrate": "npm run migrate:up --workspace=server"
   }
 }

@@ -12,5 +12,7 @@ ENV NODE_ENV=production
 COPY --from=build /repo/node_modules ./node_modules
 COPY --from=build /repo/server/package.json ./server/package.json
 COPY --from=build /repo/server/dist ./server/dist
+COPY --from=build /repo/server/migrations ./server/migrations
+COPY --from=build /repo/server/seeds ./server/seeds
 EXPOSE 4000
 CMD ["node", "server/dist/server.js"]
