@@ -5,7 +5,6 @@ import {
   titleCaseSlug,
   formatPrice,
   buildProductPath,
-  buildPageWindow,
   calculateDiscountPercent
 } from "./catalogQuery.js";
 
@@ -92,27 +91,5 @@ describe("calculateDiscountPercent", () => {
 
   it("rounds to the nearest whole percent", () => {
     expect(calculateDiscountPercent(2620, 3200)).toBe(18);
-  });
-});
-
-describe("buildPageWindow", () => {
-  it("returns every page when there are 7 or fewer total pages", () => {
-    expect(buildPageWindow(1, 5)).toEqual([1, 2, 3, 4, 5]);
-  });
-
-  it("buildPageWindow(5, 20) -> [1, ellipsis, 4, 5, 6, ellipsis, 20]", () => {
-    expect(buildPageWindow(5, 20)).toEqual([1, "ellipsis", 4, 5, 6, "ellipsis", 20]);
-  });
-
-  it("collapses the gap into a real page number when it is exactly one page wide", () => {
-    expect(buildPageWindow(2, 20)).toEqual([1, 2, 3, "ellipsis", 20]);
-  });
-
-  it("has no leading ellipsis when the current page is near the start", () => {
-    expect(buildPageWindow(1, 20)).toEqual([1, 2, "ellipsis", 20]);
-  });
-
-  it("has no trailing ellipsis when the current page is near the end", () => {
-    expect(buildPageWindow(20, 20)).toEqual([1, "ellipsis", 19, 20]);
   });
 });

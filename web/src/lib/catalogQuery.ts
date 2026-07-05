@@ -81,38 +81,3 @@ export function calculateDiscountPercent(price: number, compareAtPrice: number):
 export function buildProductPath(categorySlug: string, productSlug: string, itemId: string): string {
   return `/${categorySlug}/${productSlug}-item-${itemId}`;
 }
-
-export type PageWindowEntry = number | "ellipsis";
-
-const PAGE_WINDOW_RADIUS = 1;
-
-// buildPageWindow(5, 20) -> [1, "ellipsis", 4, 5, 6, "ellipsis", 20]
-export function buildPageWindow(currentPage: number, totalPages: number): PageWindowEntry[] {
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, index) => index + 1);
-  }
-
-  const pages = new Set<number>([1, totalPages]);
-  for (let offset = -PAGE_WINDOW_RADIUS; offset <= PAGE_WINDOW_RADIUS; offset += 1) {
-    const page = currentPage + offset;
-    if (page > 1 && page < totalPages) {
-      pages.add(page);
-    }
-  }
-
-  const sorted = [...pages].sort((a, b) => a - b);
-  const withEllipses: PageWindowEntry[] = [];
-  sorted.forEach((page, index) => {
-    if (index > 0) {
-      const previous = sorted[index - 1]!;
-      if (page - previous === 2) {
-        withEllipses.push(previous + 1);
-      } else if (page - previous > 2) {
-        withEllipses.push("ellipsis");
-      }
-    }
-    withEllipses.push(page);
-  });
-
-  return withEllipses;
-}

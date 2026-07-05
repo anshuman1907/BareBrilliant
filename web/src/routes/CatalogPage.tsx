@@ -1,14 +1,24 @@
-import { useEffect, useMemo, useState, type ReactElement } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ApiError, fetchJson } from "../lib/apiClient.js";
 import { catalogFiltersToSearchParams, formatPrice, parseCatalogFilters, titleCaseSlug } from "../lib/catalogQuery.js";
-import type { CatalogFilterState, CatalogResponseDTO, CatalogSort } from "../lib/catalogTypes.js";
+import type {
+  CatalogFilterState,
+  CatalogResponseDTO,
+  CatalogSort,
+  FilterOptionDTO,
+  ProductListItemDTO
+} from "../lib/catalogTypes.js";
 import { FilterBar } from "../components/FilterBar.js";
-import { Pagination } from "../components/Pagination.js";
 import { ProductCard } from "../components/ProductCard.js";
 import styles from "./CatalogPage.module.css";
 
 const PAGE_SIZE = 24;
+
+interface CatalogPageMeta {
+  total: number;
+  availableFilters: FilterOptionDTO[];
+}
 
 type LoadStatus = "loading" | "ready" | "not-found" | "error";
 
@@ -61,10 +71,15 @@ function buildActiveFilterChips(filters: CatalogFilterState): ActiveFilterChip[]
 export function CatalogPage(): ReactElement {
   const { category } = useParams<{ category: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [data, setData] = useState<CatalogResponseDTO | null>(null);
+  const [items, setItems] = useState<ProductListItemDTO[]>([]);
+  const [meta, setMeta] = useState<CatalogPageMeta | null>(null);
+  const [loadedPage, setLoadedPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [status, setStatus] = useState<LoadStatus>("loading");
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const filters = useMemo(() => parseCatalogFilters(searchParams), [searchParams]);
+  const hasMore = meta !== null && items.length < meta.total;
 
   useEffect(() => {
     if (!category) {
@@ -72,8 +87,10 @@ export function CatalogPage(): ReactElement {
     }
     let cancelled = false;
     setStatus("loading");
+    setItems([]);
+    setMeta(null);
 
-    const query = catalogFiltersToSearchParams(parseCatalogFilters(searchParams));
+    const query = catalogFiltersToSearchParams(filters);
     query.set("pageSize", String(PAGE_SIZE));
 
     fetchJson<CatalogResponseDTO>(`/api/categories/${category}/products?${query.toString()}`)
@@ -81,7 +98,9 @@ export function CatalogPage(): ReactElement {
         if (cancelled) {
           return;
         }
-        setData(response);
+        setItems(response.items);
+        setMeta({ total: response.total, availableFilters: response.availableFilters });
+        setLoadedPage(response.page);
         setStatus("ready");
       })
       .catch((error: unknown) => {
@@ -94,7 +113,42 @@ export function CatalogPage(): ReactElement {
     return () => {
       cancelled = true;
     };
-  }, [category, searchParams]);
+  }, [category, searchParams, filters]);
+
+  const loadMoreItems = useCallback((): void => {
+    if (!category || isLoadingMore || !hasMore) {
+      return;
+    }
+    const nextPage = loadedPage + 1;
+    setIsLoadingMore(true);
+
+    const query = catalogFiltersToSearchParams({ ...filters, page: nextPage });
+    query.set("pageSize", String(PAGE_SIZE));
+
+    fetchJson<CatalogResponseDTO>(`/api/categories/${category}/products?${query.toString()}`)
+      .then((response) => {
+        setItems((previous) => [...previous, ...response.items]);
+        setLoadedPage(response.page);
+      })
+      .catch(() => undefined)
+      .finally(() => setIsLoadingMore(false));
+  }, [category, isLoadingMore, hasMore, loadedPage, filters]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || !hasMore || status !== "ready") {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0]?.isIntersecting) {
+        loadMoreItems();
+      }
+    });
+    observer.observe(sentinel);
+
+    return () => observer.disconnect();
+  }, [hasMore, status, loadMoreItems]);
 
   function applyFilters(next: CatalogFilterState): void {
     setSearchParams(catalogFiltersToSearchParams(next));
@@ -106,10 +160,6 @@ export function CatalogPage(): ReactElement {
 
   function handleSortChange(sort: CatalogSort): void {
     applyFilters({ ...filters, sort, page: 1 });
-  }
-
-  function handlePageChange(page: number): void {
-    applyFilters({ ...filters, page });
   }
 
   function handleResetFilters(): void {
@@ -151,9 +201,9 @@ export function CatalogPage(): ReactElement {
         a range of precious metals.
       </p>
 
-      {data && (
+      {meta && (
         <FilterBar
-          availableFilters={data.availableFilters}
+          availableFilters={meta.availableFilters}
           filters={filters}
           onFilterChange={handleFilterChange}
           onSortChange={handleSortChange}
@@ -175,23 +225,24 @@ export function CatalogPage(): ReactElement {
 
       {status === "loading" && <p>Loading…</p>}
 
-      {status === "ready" && data && (
+      {status === "ready" && meta && (
         <>
           <p className={styles.resultsCount}>
-            {data.total} {data.total === 1 ? "Result" : "Results"}
+            {meta.total} {meta.total === 1 ? "Result" : "Results"}
           </p>
 
-          {data.items.length === 0 ? (
+          {items.length === 0 ? (
             <p className={styles.emptyState}>No products match your filters. Try adjusting or resetting them.</p>
           ) : (
             <div className={styles.grid}>
-              {data.items.map((item) => (
+              {items.map((item) => (
                 <ProductCard key={item.itemId} item={item} categorySlug={category} />
               ))}
             </div>
           )}
 
-          <Pagination page={data.page} pageSize={data.pageSize} total={data.total} onPageChange={handlePageChange} />
+          {hasMore && <div ref={sentinelRef} className={styles.sentinel} aria-hidden="true" />}
+          {isLoadingMore && <p className={styles.loadingMore}>Loading more…</p>}
         </>
       )}
     </main>

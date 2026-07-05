@@ -22,6 +22,12 @@
 
   --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  /* Luxury page backdrop: warm bronze glow (bottom-left) + cool highlight (top-right) over a dark vignette */
+  --bb-page-gradient: radial-gradient(ellipse 85% 65% at 8% 95%, rgb(168 122 66 / 32%), transparent 62%),
+    radial-gradient(ellipse 70% 55% at 92% 0%, rgb(130 140 150 / 20%), transparent 68%),
+    radial-gradient(ellipse 110% 70% at 50% -5%, rgb(255 255 255 / 7%), transparent 55%),
+    linear-gradient(180deg, #161514 0%, #0b0b0c 45%, #040404 100%);
 }
 
 * {

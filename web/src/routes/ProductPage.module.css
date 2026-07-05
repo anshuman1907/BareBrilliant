@@ -1,7 +1,22 @@
 .page {
+  position: relative;
   max-width: 75rem;
   margin: 0 auto;
   padding: 1.5rem;
+  min-height: 70vh;
+}
+
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+  background: var(--bb-page-gradient);
 }
 
 .breadcrumb {
