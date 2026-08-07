@@ -1,0 +1,350 @@
+.page {
+  color: #f3ece1;
+  background:
+    radial-gradient(circle at top right, rgb(229 198 145 / 12%), transparent 32%),
+    radial-gradient(circle at 15% 20%, rgb(142 112 74 / 24%), transparent 24%),
+    linear-gradient(180deg, #090705 0%, #050403 45%, #0a0807 100%);
+}
+
+.section,
+.footerTop,
+.footerBottom {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow,
+.sectionLabel,
+.footerHeading {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(243 236 225 / 92%);
+}
+
+.aboutCopy p,
+.footer p,
+.footer a {
+  color: rgb(243 236 225 / 72%);
+}
+
+.collectionCard img,
+.aboutImageWrap img,
+.featureCard img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featureCard strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.featureCard span,
+.testimonialCard figcaption span {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: rgb(203 161 92 / 72%);
+}
+
+.section {
+  width: min(1120px, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 5rem 0;
+}
+
+.sectionTitle {
+  max-width: 18ch;
+  margin: 0 0 2.5rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+  line-height: 1.08;
+}
+
+.collectionGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.collectionCard,
+.featureCard {
+  overflow: hidden;
+  border: 1px solid rgb(203 161 92 / 14%);
+  border-radius: 1.2rem;
+  text-decoration: none;
+  background: rgb(255 255 255 / 2%);
+}
+
+.collectionCard img {
+  aspect-ratio: 3 / 4;
+}
+
+.collectionCard span {
+  position: relative;
+  display: block;
+  margin-top: -4.2rem;
+  padding: 0 1rem 1.1rem;
+  font-size: 0.84rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.aboutSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.aboutImageWrap {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 1px solid rgb(203 161 92 / 16%);
+  border-radius: 1.5rem;
+}
+
+.aboutCopy p {
+  max-width: 34rem;
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.featureCard img {
+  aspect-ratio: 4 / 5;
+}
+
+.featureCard strong,
+.featureCard span {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.featureCard strong {
+  padding-top: 1rem;
+}
+
+.featureCard span {
+  display: block;
+  padding-bottom: 1rem;
+}
+
+.centeredLabel {
+  text-align: center;
+}
+
+.testimonialGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.testimonialCard {
+  margin: 0;
+  padding: 2rem;
+  border: 1px solid rgb(203 161 92 / 14%);
+  border-radius: 1.5rem;
+  background: rgb(255 255 255 / 2%);
+}
+
+.testimonialCard blockquote {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgb(243 236 225 / 84%);
+}
+
+.testimonialCard figcaption {
+  font-size: 0.95rem;
+}
+
+.testimonialCard figcaption span {
+  display: block;
+  margin-top: 0.45rem;
+}
+
+.footer {
+  margin-top: 2rem;
+  background: #1a1818;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+}
+
+.footerTop {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2rem;
+  width: min(1380px, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 3.5rem 0 2.5rem;
+}
+
+.footerGroup {
+  min-width: 0;
+}
+
+.footerHeading {
+  margin-bottom: 1rem;
+}
+
+.footerList {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footerList a {
+  text-decoration: none;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  transition: color 180ms ease;
+}
+
+.footerList a:hover {
+  color: #f3ece1;
+}
+
+.newsletterBlock {
+  min-width: 0;
+}
+
+.newsletterCopy,
+.newsletterThanks {
+  max-width: 22rem;
+  margin: 0 0 1.35rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.newsletterForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  max-width: 22rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 0.4rem;
+  overflow: hidden;
+  background: #101011;
+}
+
+.newsletterForm input {
+  min-width: 0;
+  padding: 0.95rem 1rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #f3ece1;
+  font: inherit;
+}
+
+.newsletterForm input::placeholder {
+  color: rgb(243 236 225 / 54%);
+}
+
+.newsletterForm button {
+  width: 3rem;
+  border: 0;
+  background: #ddd2c2;
+  color: #181615;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.socialList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.socialIcon {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 999px;
+  color: rgb(243 236 225 / 78%);
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.socialIcon:hover {
+  border-color: rgb(243 236 225 / 38%);
+  color: #f3ece1;
+  transform: translateY(-2px);
+}
+
+.socialIcon svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  fill: currentColor;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1.1rem 1.5rem;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  color: rgb(243 236 225 / 82%);
+  font-size: 0.95rem;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 960px) {
+  .aboutSection,
+  .collectionGrid,
+  .featureGrid,
+  .testimonialGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .footerTop {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .newsletterBlock {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    width: min(1120px, calc(100% - 2rem));
+    padding: 4rem 0;
+  }
+
+  .footerTop {
+    width: min(1380px, calc(100% - 2rem));
+    grid-template-columns: 1fr;
+    padding: 3rem 0 2rem;
+  }
+}

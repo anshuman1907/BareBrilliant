@@ -15,5 +15,9 @@
     "db:init": "npm run db:init --workspace=server",
     "db:populate": "npm run db:populate --workspace=server",
     "migrate": "npm run migrate:up --workspace=server"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1",
+    "xlsx": "^0.18.5"
   }
 }
