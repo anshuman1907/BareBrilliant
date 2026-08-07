@@ -1,0 +1,16 @@
+{
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build --workspace=web",
+  "outputDirectory": "web/dist",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://barebrilliant-server-production.up.railway.app/api/$1"
+    },
+    {
+      "source": "/((?!assets/|favicon/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
